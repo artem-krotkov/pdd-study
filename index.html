@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ПДД РБ">
+<title>ПДД РБ: по пунктам</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="reader">
+  <header id="top">
+    <button id="ref" class="ui" type="button"></button>
+    <button id="share" class="ui" type="button" aria-label="Поделиться пунктом"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></button>
+    <div id="progress"><div id="bar"></div></div>
+  </header>
+
+  <section id="stage">
+    <div id="verse"><div id="vt"></div></div>
+  </section>
+
+  <p id="hint"></p>
+  <div id="flash"></div>
+  <div id="toast" role="status"></div>
+  <p id="install" hidden>Чтобы установить: «Поделиться» → «На экран Домой». Так приложение работает без интернета и не теряет прогресс.</p>
+  <div id="update" class="ui" hidden>
+    <p id="update-text"></p>
+    <div id="update-buttons">
+      <button id="update-go" type="button"></button>
+      <button id="update-later" type="button"></button>
+    </div>
+  </div>
+
+  <footer id="controls" class="ui">
+    <button id="prev" type="button" aria-label="Предыдущий пункт">‹ пункт</button>
+    <div id="speed">
+      <button id="slower" type="button" aria-label="Медленнее">−</button>
+      <span><b id="wpm"></b> сл/мин</span>
+      <button id="faster" type="button" aria-label="Быстрее">+</button>
+    </div>
+    <button id="next" type="button" aria-label="Следующий пункт">пункт ›</button>
+  </footer>
+</main>
+
+<div id="menu" class="ui" hidden>
+  <div id="menu-head">
+    <div id="menu-left">
+      <button id="menu-back" type="button" hidden>‹ Назад</button>
+      <button id="menu-help" type="button" aria-label="Справка">?</button>
+      <button id="menu-settings" type="button" aria-label="Настройки">&#x2699;&#xFE0E;</button>
+    </div>
+    <h2 id="menu-title"></h2>
+    <button id="menu-close" type="button" aria-label="Закрыть">✕</button>
+  </div>
+  <div id="tabs">
+    <button type="button" data-tab="rules">Правила</button>
+    <button type="button" data-tab="apps">Приложения</button>
+    <button type="button" data-tab="hist">История</button>
+  </div>
+  <div id="menu-list"></div>
+  <input id="import-file" type="file" hidden>
+</div>
+
+<script src="pdd.js"></script>
+<script src="version.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
