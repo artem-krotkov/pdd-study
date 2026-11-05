@@ -8,7 +8,7 @@ const FILES = {
  "style.css": "f6024a29b02d612d",
  "app.js": "13988cbaa11a8c3e",
  "pdd.js": "aef187b5af5772ae",
- "version.js": "6664a5ae09715f7f",
+ "version.js": "c1c416671eeb6b69",
  "manifest.webmanifest": "49d777149bce79f6",
  "icons/icon-180.png": "42778c9c1d0b5e82",
  "icons/icon-192.png": "60c89dddbd07e635",
@@ -18,7 +18,7 @@ const FILES = {
  "fonts/literata-cyrillic.woff2": "39bb5c343c21e6a4",
  "fonts/literata-latin.woff2": "a60c193b55766b68"
 };
-const CACHE = 'pdd-14d591d453';
+const CACHE = 'pdd-fb044e9dbd';
 const META = '__hashes';
 
 self.addEventListener('install', (e) => {
