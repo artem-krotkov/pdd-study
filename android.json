@@ -5,10 +5,10 @@
  "native_hash": "1137c0352cdb6733f69cd877f46612ac0ba816dc3c55bc4e170953ad1f0b4a13",
  "url": "https://github.com/artem-krotkov/pdd-study/releases/download/v0.1.2/pdd-study-0.1.2.apk",
  "web": {
-  "code": 3,
-  "name": "0.1.3",
+  "code": 4,
+  "name": "0.1.4",
   "min_native": 2,
-  "notes": "Без автосмены: листание касанием, в настройках шрифт и размер букв",
+  "notes": "Описание проекта на странице GitHub",
   "manifest": [
    {
     "file_name": "app.js",
@@ -427,13 +427,13 @@
    },
    {
     "file_name": "sw.js",
-    "file_hash": "ff4671967df0ff3e15fdc4025ccb219701d706b6c3bfcd36fefcf78e4285cc2e",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/sw.js?h=ff4671967df0"
+    "file_hash": "dd494956341e3f23525b0c624a43daa55e11cf941c380350dcdb7814885b7a1c",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/sw.js?h=dd494956341e"
    },
    {
     "file_name": "version.js",
-    "file_hash": "a4692e5c9bc9ee72d2268e91791afd543a6bad508f867a751998e5ae7f33a93d",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/version.js?h=a4692e5c9bc9"
+    "file_hash": "c07ac79e812ec2486da795fcd5629dad82b128da5833b7f958d380f4766bb1a3",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/version.js?h=c07ac79e812e"
    }
   ]
  }

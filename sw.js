@@ -8,7 +8,7 @@ const FILES = {
  "style.css": "63a146d56825ef92",
  "app.js": "7dcc141dc4fe1ec2",
  "pdd.js": "50656b3a22d7ecf7",
- "version.js": "a4692e5c9bc9ee72",
+ "version.js": "c07ac79e812ec248",
  "manifest.webmanifest": "49d777149bce79f6",
  "icons/icon-180.png": "42a6229649c1a033",
  "icons/icon-192.png": "c6c730b4af2e78f1",
@@ -87,7 +87,7 @@ const FILES = {
  "img/0800004Cwmz.jpg": "15ec78af7444f86c",
  "img/0800004Dwmz.jpg": "2c03ceaa5cba87fc"
 };
-const CACHE = 'pdd-784193ab50';
+const CACHE = 'pdd-011876ee60';
 const META = '__hashes';
 
 self.addEventListener('install', (e) => {
