@@ -3,6 +3,7 @@
 // Данные: window.PDD = {ver, src, books: [{n: название, s: короткое, c: [{n: глава, v: [[номер, текст, группа], ...]}]}]}
 // «Стих» здесь - пункт (подпункт) с номером из Правил; на экране - пункт целиком или его часть.
 const BOOKS = window.PDD.books;
+const PICS = window.PDD.pics || []; // группы листов: [{n, imgs: [[файл, ширина, высота]]}]
 const START = { b: 0, c: 0, v: -1 }; // заголовок главы 1
 const WPM_MIN = 50;
 const WPM_MAX = 500;
@@ -34,6 +35,7 @@ function store(key, value) {
 
 const item = (b, c, v) => BOOKS[b].c[c].v[v];
 const isSign = (it) => it[1].startsWith('«');
+const kindOf = (it) => (isSign(it) ? 'знак ' : it[3] ? 'разметка ' : 'п. ');
 const chapNo = (ch) => (/^Глава (\d+)\./.exec(ch.n) || [])[1] || '';
 
 function escapeHtml(s) {
@@ -48,12 +50,71 @@ function tokensOf(b, c, v) {
   if (tokCache.has(key)) return tokCache.get(key);
   const out = [];
   item(b, c, v)[1].split('\n').forEach((line, li) => {
-    const words = line.split(/\s+/).filter(Boolean);
     const dash = li > 0 && /^[а-яёa-z]/.test(line);
-    words.forEach((w, wi) => out.push({ w: dash && wi === 0 ? '–\u00a0' + w : w, br: li > 0 && wi === 0 }));
+    const spans = refSpans(b, c, line);
+    let wi = 0;
+    for (const m of line.matchAll(/\S+/g)) {
+      const from = m.index;
+      const to = from + m[0].length;
+      const first = wi === 0;
+      const shift = dash && first ? 2 : 0; // тире и неразрывный пробел перед словом
+      const refs = spans.filter((x) => x[0] >= from && x[1] <= to).map((x) => [x[0] - from + shift, x[1] - from + shift, x[2]]);
+      out.push({ w: shift ? '–\u00a0' + m[0] : m[0], br: li > 0 && first, refs });
+      wi++;
+    }
   });
   tokCache.set(key, out);
   return out;
+}
+
+// ---------- ссылки на другие пункты ----------
+// «подпункта 10.4 пункта 10», «пунктов 57, 58 и 60»: номер становится ссылкой, касание открывает пункт в окне.
+// В Правилах номера ищутся в Правилах; в приложениях - в том же приложении, если рядом не сказано «Правил».
+
+const SUPS = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+const NUM = '\\d+(?:\\.\\d+)*[' + SUPS + ']*';
+const REF_HEAD = new RegExp('(?<![а-яё])(?:под)?пункт(?:а|у|ом|е|ы|ов|ами|ах)?\\s+(' + NUM + '(?:(?:\\s*[,–-]\\s*|\\s+и\\s+|\\s+или\\s+)' + NUM + ')*)', 'gi');
+const REF_NUM = new RegExp(NUM, 'g');
+let numIndex = null;
+
+function findRefNumber(b, num, c) {
+  if (!numIndex) {
+    numIndex = new Map();
+    BOOKS.forEach((bk, bi) => bk.c.forEach((ch, ci) => ch.v.forEach((it, vi) => {
+      if (!it[0] || isSign(it)) return;
+      const k = bi + '|' + it[0];
+      if (!numIndex.has(k)) numIndex.set(k, { b: bi, c: ci, v: vi });
+      const kc = bi + '|' + ci + '|' + it[0];
+      if (!numIndex.has(kc)) numIndex.set(kc, { b: bi, c: ci, v: vi });
+    })));
+  }
+  return (c !== undefined && numIndex.get(b + '|' + c + '|' + num)) || numIndex.get(b + '|' + num) || null;
+}
+
+function refSpans(b, c, line) {
+  const out = [];
+  for (const m of line.matchAll(REF_HEAD)) {
+    const end = m.index + m[0].length;
+    const toRules = b === 0 || /^[^;.]{0,30}Правил/.test(line.slice(end, end + 40));
+    const base = end - m[1].length;
+    for (const n of m[1].matchAll(REF_NUM)) {
+      const t = toRules ? findRefNumber(0, n[0]) : findRefNumber(b, n[0], c);
+      if (t) out.push([base + n.index, base + n.index + n[0].length, t]);
+    }
+  }
+  return out;
+}
+
+// слово со ссылками: ссылка - только номер, знаки препинания рядом остаются обычным текстом
+function wordHtml(t) {
+  if (!t.refs.length) return escapeHtml(t.w);
+  let s = '';
+  let at = 0;
+  for (const [from, to, r] of t.refs) {
+    s += escapeHtml(t.w.slice(at, from)) + '<a class="xref" data-k="' + r.b + '.' + r.c + '.' + r.v + '">' + escapeHtml(t.w.slice(from, to)) + '</a>';
+    at = to;
+  }
+  return s + escapeHtml(t.w.slice(at));
 }
 
 // родительские пункты для подпункта, который читается только вместе с ними (текст со строчной буквы):
@@ -91,14 +152,25 @@ function labelOf(b, c, v) {
   const it = item(b, c, v);
   const group = it[2] ? it[2].replace(/^§\s*\d+\.\s*/, '') : '';
   if (isSign(it)) return group; // номер знака уже в тексте
-  return it[0] ? 'п. ' + it[0] + (group ? ' · ' + group : '') : '';
+  return it[0] ? kindOf(it) + it[0] + (group ? ' · ' + group : '') : '';
+}
+
+// рисунок разметки (it[3]) в пункте и ссылка «Рисунок» у знака (it[4] - группа листов); ширина в 1,4 раза больше исходной
+function picHtml(it) {
+  if (!it[3]) return '';
+  return it[3].map(([f, w, h]) => '<div class="pic"><img src="img/' + f + '" width="' + w + '" height="' + h + '" alt="" style="width:' + Math.round(w * 1.4) + 'px"></div>').join('');
+}
+
+function sheetLink(it, last) {
+  return last && typeof it[4] === 'number' ? '<div class="more"><a class="xref" data-g="' + it[4] + '">Смотреть рисунок</a></div>' : '';
 }
 
 function partHtml(b, c, v, toks, a, z, np, pi) {
   let text = '';
-  for (let k = a; k <= z; k++) text += (k > a ? (toks[k].br ? '\n' : ' ') : '') + escapeHtml(toks[k].w);
+  for (let k = a; k <= z; k++) text += (k > a ? (toks[k].br ? '\n' : ' ') : '') + wordHtml(toks[k]);
   const label = labelOf(b, c, v) + (np > 1 ? ' <i>· ' + (pi + 1) + '/' + np + '</i>' : '');
-  return upHtml(b, c, v) + (label ? '<div class="num">' + label + '</div>' : '') + '<div>' + text + '</div>';
+  const it = item(b, c, v);
+  return upHtml(b, c, v) + (label ? '<div class="num">' + label + '</div>' : '') + picHtml(it) + '<div>' + text + '</div>' + sheetLink(it, z === toks.length - 1);
 }
 
 // ---------- экраны главы ----------
@@ -106,45 +178,59 @@ function partHtml(b, c, v, toks, a, z, np, pi) {
 // шрифта и размера букв (меряется в #vt), поэтому кэш сбрасывается в measure()
 
 const screenCache = new Map();
-const CLAUSE_END = /[,;:.!?…—]["»”')]*$/;
 
 function fits(html) {
   el.vt.innerHTML = html;
   return el.vt.offsetHeight <= el.verse.clientHeight - 6;
 }
 
-// части: сначала целиком, иначе на n частей примерно равной длины (n = 2, 3, ...), границы - у знаков препинания и строк списка
+// Деление длинного пункта: сначала целиком; иначе экран набирается «сколько влезет» (бинарный поиск по словам),
+// а затем край отодвигается назад до ближайшей границы по смыслу: конец предложения, затем конец строки списка
+// или «;», затем запятая. Граница берётся, только если на экране остаётся не меньше 40% того, что влезло, -
+// лучше большой кусок, чем разрез в неудобном месте. Иначе режем по слову.
+const SENT_END = /[.!?…]["»”')]*$/;
+const MIN_FILL = 0.4;
+
+function breakStrength(toks, q) {
+  const w = toks[q].w;
+  const next = toks[q + 1];
+  if (!next) return 4;
+  if (SENT_END.test(w) && (next.br || /^[«"(–\u00a0]*[A-ZА-ЯЁ0-9]/.test(next.w))) return 3;
+  if (next.br || /[;:]["»”')]*$/.test(w)) return 2;
+  if (/[,—–]["»”')]*$/.test(w)) return 1;
+  return 0;
+}
+
 function splitVerse(b, c, v) {
   const toks = tokensOf(b, c, v);
   const last = toks.length - 1;
   const html = (a, z, np, pi) => partHtml(b, c, v, toks, a, z, np, pi);
   if (last <= 0 || fits(html(0, last, 1, 0))) return [[0, last]];
-  const cum = [];
-  let sum = 0;
-  toks.forEach((t) => { sum += t.w.length + 1; cum.push(sum); });
-  const first = Math.max(2, Math.floor(el.vt.offsetHeight / Math.max(1, el.verse.clientHeight)));
-  let parts = [];
-  for (let n = first; n <= 60; n++) {
-    parts = [];
-    let from = 0;
-    for (let k = 1; k < n; k++) {
-      const ideal = (sum * k) / n;
-      let best = -1;
-      let bestScore = Infinity;
-      for (let q = from; q <= last - (n - k); q++) {
-        const edge = CLAUSE_END.test(toks[q].w) || (toks[q + 1] && toks[q + 1].br);
-        const score = Math.abs(cum[q] - ideal) * (edge ? 1 : 2.5);
-        if (score < bestScore) {
-          bestScore = score;
-          best = q;
+  const parts = [];
+  let from = 0;
+  while (from <= last) {
+    // самый далёкий конец, при котором часть ещё влезает (метка «· 1/9» учтена с запасом)
+    let lo = from;
+    let hi = last;
+    while (lo < hi) {
+      const mid = Math.ceil((lo + hi) / 2);
+      if (fits(html(from, mid, 9, 0))) lo = mid;
+      else hi = mid - 1;
+    }
+    let end = lo;
+    if (end < last) {
+      const floor = from + Math.max(0, Math.floor((end - from + 1) * MIN_FILL) - 1);
+      for (const need of [3, 2, 1]) {
+        let q = end;
+        while (q >= floor && breakStrength(toks, q) < need) q--;
+        if (q >= floor) {
+          end = q;
+          break;
         }
       }
-      if (best < from) break;
-      parts.push([from, best]);
-      from = best + 1;
     }
-    parts.push([from, last]);
-    if (parts.length === n && parts.every(([a, z], i) => fits(html(a, z, n, i)))) return parts;
+    parts.push([from, end]);
+    from = end + 1;
   }
   return parts;
 }
@@ -249,7 +335,7 @@ function refText(p) {
   const head = p.b === 0 ? 'Гл. ' + chapNo(ch) : book.s + (book.c.length > 1 && chapNo(ch) ? ', гл. ' + chapNo(ch) : '');
   if (p.v < 0) return p.b === 0 ? head : book.s + (book.c.length > 1 ? ', ' + ch.n.replace(/\..*$/, '').toLowerCase() : '');
   const it = item(p.b, p.c, p.v);
-  return head + (it[0] ? ' · ' + (isSign(it) ? 'знак ' : 'п. ') + it[0] : '');
+  return head + (it[0] ? ' · ' + kindOf(it) + it[0] : '');
 }
 
 function render() {
@@ -520,7 +606,7 @@ function flash(side) {
 }
 
 el.reader.addEventListener('pointerdown', (e) => {
-  if (e.target.closest('.ui')) return;
+  if (e.target.closest('.ui') || e.target.closest('a.xref')) return; // ссылку на пункт обрабатывает click
   e.preventDefault();
   pointers.add(e.pointerId);
   try { el.reader.setPointerCapture(e.pointerId); } catch (err) { /* ок */ }
@@ -591,6 +677,10 @@ document.addEventListener('contextmenu', (e) => { if (!e.target.closest('textare
 
 // на компьютере: стрелки - пункты, пробел - как касание, +/- скорость
 document.addEventListener('keydown', (e) => {
+  if (!$('xref').hidden) {
+    if (e.key === 'Escape') closeXref();
+    return;
+  }
   if (!el.menu.hidden) {
     if (e.key === 'Escape') closeMenu();
     return;
@@ -753,9 +843,20 @@ function showRules() {
 
 function showApps() {
   el.menuTitle.textContent = 'Приложения';
-  const parts = [node('p', 'summary', 'Знаки и разметка даны словесным описанием: рисунков в приложении нет.')];
+  const parts = [node('p', 'summary', 'Знаки и разметка описаны словами; рисунки - в разделе «Рисунки» ниже и у пунктов разметки.')];
   for (let b = 1; b < BOOKS.length; b++) {
     parts.push(node('h3', 'sect', BOOKS[b].n + ' · ' + percent(bookRead(b) / BOOK_VERSES[b])), chapterButtons(b));
+  }
+  if (PICS.length) {
+    const list = node('div', 'chaps');
+    PICS.forEach((g, i) => {
+      const btn = node('button');
+      btn.type = 'button';
+      btn.append(node('span', '', g.n));
+      btn.addEventListener('click', () => openXref({ g: i }));
+      list.append(btn);
+    });
+    parts.push(node('h3', 'sect', 'Рисунки из Правил'), list);
   }
   el.menuList.replaceChildren(...parts);
   const cur = el.menuList.querySelector('.cur');
@@ -966,7 +1067,7 @@ const HELP = [
   ]],
   ['О тексте', [
     'Правила дорожного движения Республики Беларусь (Указ Президента №551 от 28.11.2005) в редакции с учётом Указа №295 от 04.08.2025. Источник - etalonline.by.',
-    'Рисунков знаков, разметки и светофоров нет: знаки и разметка даны словесным описанием.',
+    'Рисунки (листы знаков, светофоры, схемы) взяты из того же текста Правил: у знака - ссылка «Смотреть рисунок», у разметки рисунок показан в пункте, все листы - Меню → Приложения → «Рисунки из Правил».',
     'Приложение - пособие для изучения, оно не заменяет официальный текст. Сверяйтесь с действующей редакцией на pravo.by.',
   ]],
 ];
@@ -1057,6 +1158,72 @@ el.tabs.addEventListener('click', (e) => {
   showMenuTab();
 });
 
+// ---------- пункт по ссылке во всплывающем окне ----------
+// Окно закрывается касанием вне него или крестиком; в нём тоже есть ссылки (кнопка «Назад» возвращает на шаг),
+// «Перейти к пункту» открывает его в чтении.
+
+let xstack = [];
+
+function showXref() {
+  const t = xstack[xstack.length - 1];
+  const gallery = t.g !== undefined;
+  $('xref').classList.toggle('gallery', gallery);
+  $('xref-go').hidden = gallery;
+  if (gallery) {
+    $('xref-title').textContent = PICS[t.g].n;
+    $('xref-body').innerHTML = PICS[t.g].imgs.map(([f, w, h]) => '<img class="sheet" src="img/' + f + '" width="' + w + '" height="' + h + '" alt="">').join('');
+  } else {
+    const toks = tokensOf(t.b, t.c, t.v);
+    $('xref-title').textContent = refText(t);
+    $('xref-body').innerHTML = partHtml(t.b, t.c, t.v, toks, 0, toks.length - 1, 1, 0);
+  }
+  $('xref-body').scrollTop = 0;
+  $('xref-body').scrollLeft = 0;
+  $('xref-back').hidden = xstack.length < 2;
+}
+
+function openXref(t) {
+  if (!xstack.length) {
+    pause();
+    endManual();
+  }
+  xstack.push(t);
+  showXref();
+  $('xref').hidden = false;
+}
+
+function xBack() {
+  xstack.pop();
+  showXref();
+}
+
+function closeXref() {
+  xstack = [];
+  $('xref').hidden = true;
+  reloadIfIdle();
+}
+
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a.xref');
+  if (!a) return;
+  e.preventDefault();
+  if (a.dataset.g !== undefined) {
+    openXref({ g: Number(a.dataset.g) });
+    return;
+  }
+  const [b, c, v] = a.dataset.k.split('.').map(Number);
+  openXref({ b, c, v });
+});
+
+$('xref').addEventListener('click', (e) => { if (e.target === $('xref')) closeXref(); });
+$('xref-close').addEventListener('click', closeXref);
+$('xref-back').addEventListener('click', xBack);
+$('xref-go').addEventListener('click', () => {
+  const t = xstack[xstack.length - 1];
+  closeXref();
+  goTo(t);
+});
+
 // ---------- запуск ----------
 
 window.addEventListener('resize', () => { measure(); render(); });
@@ -1072,7 +1239,7 @@ if (plugins.CapacitorUpdater) plugins.CapacitorUpdater.notifyAppReady().catch(()
 let reloadWhenIdle = false;
 
 function reloadIfIdle() {
-  if (reloadWhenIdle && !playing && el.menu.hidden) location.reload();
+  if (reloadWhenIdle && !playing && el.menu.hidden && $('xref').hidden) location.reload();
 }
 
 if ('serviceWorker' in navigator && !window.Capacitor && (location.protocol === 'https:' || location.hostname === 'localhost')) {
@@ -1169,7 +1336,7 @@ async function shareItem() {
   const s = curScreen();
   if (s.h) return;
   const it = item(pos.b, pos.c, s.v);
-  const where = pos.b === 0 ? 'Правила дорожного движения РБ, п. ' + it[0] : BOOKS[pos.b].n + ' (ПДД РБ), ' + (isSign(it) ? 'знак ' : 'п. ') + it[0];
+  const where = pos.b === 0 ? 'Правила дорожного движения РБ, п. ' + it[0] : BOOKS[pos.b].n + ' (ПДД РБ), ' + kindOf(it) + it[0];
   const text = it[1] + '\n' + where;
   try {
     if (plugins.Share) {
@@ -1283,7 +1450,10 @@ if (!load('helpSeen', false)) {
 // кнопка «назад» Android: сначала закрыть меню, иначе свернуть приложение
 if (plugins.App) {
   plugins.App.addListener('backButton', () => {
-    if (!el.menu.hidden) {
+    if (!$('xref').hidden) {
+      if (xstack.length > 1) xBack();
+      else closeXref();
+    } else if (!el.menu.hidden) {
       if (!el.menuBack.hidden) showMenuTab();
       else closeMenu();
     } else {

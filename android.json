@@ -1,19 +1,19 @@
 {
- "code": 1,
- "name": "0.1.1",
- "notes": "Первая версия: Правила и приложения по пунктам",
- "native_hash": "8eb4d70559cdca6f2f09936c64fcf33c8b1898a4cc4b3e3839aa2329711ef740",
- "url": "https://github.com/artem-krotkov/pdd-study/releases/download/v0.1.1/pdd-study-0.1.1.apk",
+ "code": 2,
+ "name": "0.1.2",
+ "notes": "Иконка-знак, голубой цвет, ссылки на пункты, рисунки, деление по предложениям",
+ "native_hash": "1137c0352cdb6733f69cd877f46612ac0ba816dc3c55bc4e170953ad1f0b4a13",
+ "url": "https://github.com/artem-krotkov/pdd-study/releases/download/v0.1.2/pdd-study-0.1.2.apk",
  "web": {
-  "code": 1,
-  "name": "0.1.1",
-  "min_native": 1,
-  "notes": "Первая версия: Правила и приложения по пунктам",
+  "code": 2,
+  "name": "0.1.2",
+  "min_native": 2,
+  "notes": "Иконка-знак, голубой цвет, ссылки на пункты, рисунки, деление по предложениям",
   "manifest": [
    {
     "file_name": "app.js",
-    "file_hash": "13988cbaa11a8c3ec4f3126d56ba7481e3e3972b4389fe7a2d786c7e5ff39ae9",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/app.js?h=13988cbaa11a"
+    "file_hash": "58b04351288851b7d78b70752c18ce71be9f0a0c6b5556c878d0e32a531b788b",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/app.js?h=58b043512888"
    },
    {
     "file_name": "fonts/literata-cyrillic.woff2",
@@ -47,23 +47,368 @@
    },
    {
     "file_name": "icons/icon-180.png",
-    "file_hash": "42778c9c1d0b5e82b4d1845047752d540f55f707535ab84b93a63c98450b707a",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/icons/icon-180.png?h=42778c9c1d0b"
+    "file_hash": "42a6229649c1a033f896039ed0977c4cb804b8eb645c86ea8908e9c5244caa51",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/icons/icon-180.png?h=42a6229649c1"
    },
    {
     "file_name": "icons/icon-192.png",
-    "file_hash": "60c89dddbd07e6359a03bef6f910fe77cbd7a7a670f8be2ecc96a5d9be0812f5",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/icons/icon-192.png?h=60c89dddbd07"
+    "file_hash": "c6c730b4af2e78f14df66cc5bfee3e55bb5b1eaefd689ceb583d64f6fc571bc9",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/icons/icon-192.png?h=c6c730b4af2e"
    },
    {
     "file_name": "icons/icon-512.png",
-    "file_hash": "c6ac8f5f465145024f31a7933fc2a6f435335a146a573d0eff7f6bd0820ebfe8",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/icons/icon-512.png?h=c6ac8f5f4651"
+    "file_hash": "d99d07c1290cde85f1bcf03ab7b225444b1f4a3bd3955aa4b4cd513cabd106b5",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/icons/icon-512.png?h=d99d07c1290c"
+   },
+   {
+    "file_name": "img/02000001jpg.jpg",
+    "file_hash": "f6bf5327ef985dc5b904667b19672ad9570102260ca35c76ed33826303fecb60",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000001jpg.jpg?h=f6bf5327ef98"
+   },
+   {
+    "file_name": "img/02000002jpg.png",
+    "file_hash": "f681b71d4122fc4355a2d67d31f4079846343551941ebfe076c8cfabc2166ae8",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000002jpg.png?h=f681b71d4122"
+   },
+   {
+    "file_name": "img/02000003jpg.jpg",
+    "file_hash": "64312b217cc908f64a0c2eea080edff6f9dd5e3660ab82796dab85e98729f07f",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000003jpg.jpg?h=64312b217cc9"
+   },
+   {
+    "file_name": "img/02000004jpg.jpg",
+    "file_hash": "aa44fc7eef4de7a86ec57596de86d9bb795d9ef65379c454388e1f77d2b44fb6",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000004jpg.jpg?h=aa44fc7eef4d"
+   },
+   {
+    "file_name": "img/02000005jpg.jpg",
+    "file_hash": "6f5aa112833611d548095b6346cccb33cd6137ba40712928b314c189ccb4bf43",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000005jpg.jpg?h=6f5aa1128336"
+   },
+   {
+    "file_name": "img/02000006jpg.jpg",
+    "file_hash": "464bced74502550c7462e6c2cf490a598cecfa0ed28af208c532134e441c4301",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000006jpg.jpg?h=464bced74502"
+   },
+   {
+    "file_name": "img/02000008jpg.jpg",
+    "file_hash": "39801e41be02557b17970097a48e2a42b6724ee062be14d96176601dea329d20",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000008jpg.jpg?h=39801e41be02"
+   },
+   {
+    "file_name": "img/02000009jpg.jpg",
+    "file_hash": "29b91af3b247b5ab8afb4e7efd86051ad42f42bf3281097a4bc2b9cbef4d334e",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000009jpg.jpg?h=29b91af3b247"
+   },
+   {
+    "file_name": "img/0200000Ajpg.jpg",
+    "file_hash": "d31ab16e009267754059cc9beaab5c23a239852b7f56ad592377df4837da08c2",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200000Ajpg.jpg?h=d31ab16e0092"
+   },
+   {
+    "file_name": "img/0200000Bjpg.jpg",
+    "file_hash": "ef64452ff97d02697cb7d844af14639f1fc98281f7e5d3febb839302ea6953b0",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200000Bjpg.jpg?h=ef64452ff97d"
+   },
+   {
+    "file_name": "img/0200000Djpg.jpg",
+    "file_hash": "b8cb17113a86c43df8a5a4e663c43a73bcb7019f2ddb58a1645e9a36eecad897",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200000Djpg.jpg?h=b8cb17113a86"
+   },
+   {
+    "file_name": "img/0200000Ejpg.jpg",
+    "file_hash": "9c3259126e4f568505d47bc9b129c35f63bcd61da42df7a6aad55f8c1a1dd143",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200000Ejpg.jpg?h=9c3259126e4f"
+   },
+   {
+    "file_name": "img/0200000Fjpg.jpg",
+    "file_hash": "ed803be07de474889b2688b2dab660793198b81e2c1fc0ed0400f9eeab72deb3",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200000Fjpg.jpg?h=ed803be07de4"
+   },
+   {
+    "file_name": "img/02000010jpg.jpg",
+    "file_hash": "bb8f303f8b8b879bfbdc9fce6b76ffde4f38b077aa566bfc0340210ecd393dc4",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000010jpg.jpg?h=bb8f303f8b8b"
+   },
+   {
+    "file_name": "img/02000011jpg.jpg",
+    "file_hash": "ec403ad520af0cfbdbc4ec98032110a546597e5dc95d0c91a19dd3cf7dbcb8f7",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000011jpg.jpg?h=ec403ad520af"
+   },
+   {
+    "file_name": "img/02000012jpg.jpg",
+    "file_hash": "63d45c1a13a0cf91605666cd224120f71b624746b1b03324b061735b277953f2",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000012jpg.jpg?h=63d45c1a13a0"
+   },
+   {
+    "file_name": "img/02000014jpg.jpg",
+    "file_hash": "d745e683b34d07ab730ad800f3e4be96284db9fec961f34701d9189e7990ce56",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000014jpg.jpg?h=d745e683b34d"
+   },
+   {
+    "file_name": "img/02000016jpg.jpg",
+    "file_hash": "a270920199dd1c080306c204ba986880e3a1d979d864e1f74aed45ef3c7ebf8d",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000016jpg.jpg?h=a270920199dd"
+   },
+   {
+    "file_name": "img/02000017jpg.jpg",
+    "file_hash": "182fb11f164109716a1563f8012c2d3b7987c9fd1fb429541293b468a27f5b31",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000017jpg.jpg?h=182fb11f1641"
+   },
+   {
+    "file_name": "img/02000030jpg.jpg",
+    "file_hash": "5cd0bc6b325ccb2552e51f07185065c55e564e9eafec5012e94cd107fa04c70e",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000030jpg.jpg?h=5cd0bc6b325c"
+   },
+   {
+    "file_name": "img/0200003Ajpg.png",
+    "file_hash": "42f1951336a64e605c47b84a715245c83a4739739b2d86c69f9b03bbdbead5c7",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200003Ajpg.png?h=42f1951336a6"
+   },
+   {
+    "file_name": "img/0200003Cjpg.png",
+    "file_hash": "bd7496fc6c133e57c4e6077856e88076a9c3f5327e2be914e5556cfdf61d7ffb",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200003Cjpg.png?h=bd7496fc6c13"
+   },
+   {
+    "file_name": "img/0200003Djpg.png",
+    "file_hash": "4b22d1a4f5ed701327be137cf911f61326c65bdf559e33ed9e5ea0d284d63091",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200003Djpg.png?h=4b22d1a4f5ed"
+   },
+   {
+    "file_name": "img/0200003Ejpg.png",
+    "file_hash": "f9dc94ce2f9c9bb2699995d7d31b3ca3e476286106e045566ae67f9cee10ad1c",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200003Ejpg.png?h=f9dc94ce2f9c"
+   },
+   {
+    "file_name": "img/0200003Fjpg.png",
+    "file_hash": "cde517bddecb9020110b0a6b0355c60dfbedd9aa5975f603651aef79188fa80a",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200003Fjpg.png?h=cde517bddecb"
+   },
+   {
+    "file_name": "img/02000040jpg.png",
+    "file_hash": "21af94cb08b32b19535c79965ac7d37fbcb0fdf41f42aca40a3d288f54dc7d52",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000040jpg.png?h=21af94cb08b3"
+   },
+   {
+    "file_name": "img/02000042jpg.jpg",
+    "file_hash": "a2a3c49ceda38deffebc5db8eb89aa01de5a78541af12e530f8c9dd49ac083de",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000042jpg.jpg?h=a2a3c49ceda3"
+   },
+   {
+    "file_name": "img/02000043jpg.jpg",
+    "file_hash": "8f6cff0ee36bcd36aec80108764aba8bf7b93629ac88556135ada2bd349dfa5a",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000043jpg.jpg?h=8f6cff0ee36b"
+   },
+   {
+    "file_name": "img/02000044jpg.jpg",
+    "file_hash": "7ce0739b2bfb09f8396429a4d2f6ed9ad91170015803840d5fce2c20e536389b",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000044jpg.jpg?h=7ce0739b2bfb"
+   },
+   {
+    "file_name": "img/02000045jpg.png",
+    "file_hash": "bac53366da97e5cb82b26bb5464972082ce3c6c9ff2cb762fed0a4c231b16612",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000045jpg.png?h=bac53366da97"
+   },
+   {
+    "file_name": "img/02000046jpg.png",
+    "file_hash": "45b18cafcf6640108de8a673427419d405c96e0f5c66f5bd7b96489cf22feeee",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000046jpg.png?h=45b18cafcf66"
+   },
+   {
+    "file_name": "img/02000047jpg.png",
+    "file_hash": "eba8eb96ceebb69be5a5fd8850c546ea8a8c2928645e6e3818221122ee03ef3b",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/02000047jpg.png?h=eba8eb96ceeb"
+   },
+   {
+    "file_name": "img/0200004Ejpg.jpg",
+    "file_hash": "836e4e9f533be9abcafd3166d224cc0f274ebcaa2a1680ccf2070388b5835279",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0200004Ejpg.jpg?h=836e4e9f533b"
+   },
+   {
+    "file_name": "img/0300002Epng.png",
+    "file_hash": "823aff9900eff0845b684a4e0e78c154a6818324785c5485f21b79107d3da768",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0300002Epng.png?h=823aff9900ef"
+   },
+   {
+    "file_name": "img/0600002Femz.png",
+    "file_hash": "975a3c8451a91ba3f4f813dcbd4a69e9c7ad8fb99f34acc35da56f60cc301fc0",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0600002Femz.png?h=975a3c8451a9"
+   },
+   {
+    "file_name": "img/06000037emz.png",
+    "file_hash": "547f9d057e15a10d4717d3e9d122e33bb0f1dae77fafcbfc186ead45c743c3ab",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/06000037emz.png?h=547f9d057e15"
+   },
+   {
+    "file_name": "img/0600003Bemz.png",
+    "file_hash": "4c07340d2802607a40a83924c15b8fae4b2612bbdd316644fb2f55d9ed067cf7",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0600003Bemz.png?h=4c07340d2802"
+   },
+   {
+    "file_name": "img/06000041emz.png",
+    "file_hash": "f2b4eecf8ec3f0ab61e9459ba8f199734c057ff7679bf304e6572df46fb52198",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/06000041emz.png?h=f2b4eecf8ec3"
+   },
+   {
+    "file_name": "img/08000019wmz.png",
+    "file_hash": "1a89469fd6c8078415df585fa1acf1efce890fa4fe186e313c7ddc180494f0d3",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000019wmz.png?h=1a89469fd6c8"
+   },
+   {
+    "file_name": "img/0800001Awmz.png",
+    "file_hash": "a2f3cf65372bcb8c03189b494bbef85dbacddf4df471c1d60e9ada630ffd8b68",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800001Awmz.png?h=a2f3cf65372b"
+   },
+   {
+    "file_name": "img/0800001Bwmz.png",
+    "file_hash": "29654bee96d069d776019dae63aaea4701e1e5a7ae31739ffbdec3488c8e4d9a",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800001Bwmz.png?h=29654bee96d0"
+   },
+   {
+    "file_name": "img/0800001Cwmz.png",
+    "file_hash": "f47281f9232a43453550f76a9ada7bf177a57b513305ba11f5afbcb5f50894a7",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800001Cwmz.png?h=f47281f9232a"
+   },
+   {
+    "file_name": "img/0800001Dwmz.png",
+    "file_hash": "546b26fe3cd5d4b16c5ce0e92fafb05417c5de1e0d087afff38b616c39130e1a",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800001Dwmz.png?h=546b26fe3cd5"
+   },
+   {
+    "file_name": "img/0800001Ewmz.png",
+    "file_hash": "e8c25b23696831cbbdcf2568a9cf0ba30bffa3c5840492400144ec05e9785da2",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800001Ewmz.png?h=e8c25b236968"
+   },
+   {
+    "file_name": "img/0800001Fwmz.png",
+    "file_hash": "6230d812bd6f656b1dfb4f245bd1ca17d440be238cefec50f9717a59dbd685ca",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800001Fwmz.png?h=6230d812bd6f"
+   },
+   {
+    "file_name": "img/08000020wmz.png",
+    "file_hash": "d9920d2044b990fb430639992949212255e841029aa136ad25f3da21f5f07fbf",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000020wmz.png?h=d9920d2044b9"
+   },
+   {
+    "file_name": "img/08000021wmz.png",
+    "file_hash": "7e6d577fee3a06a5a86dac9512ac6af75222e718915cb0e7ef742792a9de8993",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000021wmz.png?h=7e6d577fee3a"
+   },
+   {
+    "file_name": "img/08000022wmz.png",
+    "file_hash": "6c3324b45ed17521db1e4eb6a483757785899bf799c43b89487828a2571a986e",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000022wmz.png?h=6c3324b45ed1"
+   },
+   {
+    "file_name": "img/08000023wmz.png",
+    "file_hash": "1416ba9a0261b3efde9814d253c7e7905e9490e21d0e668adfdeef948c4c3209",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000023wmz.png?h=1416ba9a0261"
+   },
+   {
+    "file_name": "img/08000024wmz.png",
+    "file_hash": "ac93a3d4499a41c55d2affbe2730f746118a2524dd2d306c8a1d9b75f68806ca",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000024wmz.png?h=ac93a3d4499a"
+   },
+   {
+    "file_name": "img/08000025wmz.png",
+    "file_hash": "1193e79c1a75995cf545fa9068df5ff3cd8036f3309bd7b0a531aa41836fff31",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000025wmz.png?h=1193e79c1a75"
+   },
+   {
+    "file_name": "img/08000026wmz.png",
+    "file_hash": "9365726ed3989ca09b85e5ffc92bd0cb1817423114de2224bbbb92b1ce559f7c",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000026wmz.png?h=9365726ed398"
+   },
+   {
+    "file_name": "img/08000027wmz.png",
+    "file_hash": "b3e0133a4d402aa64e11f985a78e6dd8e5d221c5667d6adef0cd1dba86789ba5",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000027wmz.png?h=b3e0133a4d40"
+   },
+   {
+    "file_name": "img/08000028wmz.png",
+    "file_hash": "19fdf0ba9e29a6209600b776e059607282c11965fd579ef0e58f545dc948b4db",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000028wmz.png?h=19fdf0ba9e29"
+   },
+   {
+    "file_name": "img/08000029wmz.png",
+    "file_hash": "59c799c4409ef52e677fe9d94e88237a665ea2edca36338fed19b3e0dee76d9f",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000029wmz.png?h=59c799c4409e"
+   },
+   {
+    "file_name": "img/0800002Awmz.png",
+    "file_hash": "9bdfac997879349b571dfd31a80851bd982bd9804cb617d1624d77694c0bf4a0",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800002Awmz.png?h=9bdfac997879"
+   },
+   {
+    "file_name": "img/0800002Bwmz.png",
+    "file_hash": "7a7ec7e324c84819118caea7c3e02f79d869c89710ded17e0d21c9811e60bb04",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800002Bwmz.png?h=7a7ec7e324c8"
+   },
+   {
+    "file_name": "img/0800002Cwmz.png",
+    "file_hash": "fbbf0d097705ae756807e0a3c0374167148380744877cf6c10837c22317af1b6",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800002Cwmz.png?h=fbbf0d097705"
+   },
+   {
+    "file_name": "img/0800002Dwmz.png",
+    "file_hash": "cea39ff5b8fc5d20b76a3a081f956081ab08a25c3d7df1aa5addf7ed0446190c",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800002Dwmz.png?h=cea39ff5b8fc"
+   },
+   {
+    "file_name": "img/08000031wmz.png",
+    "file_hash": "a5dbcc0300dee061e8e66bf0c48a67d234cbb3194a237d2459ca72a5f7664e1a",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000031wmz.png?h=a5dbcc0300de"
+   },
+   {
+    "file_name": "img/08000032wmz.png",
+    "file_hash": "07fc38f39791f762341831e7db4b24e490cd2054c9f00af59e8b907f1f11f5e8",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000032wmz.png?h=07fc38f39791"
+   },
+   {
+    "file_name": "img/08000033wmz.png",
+    "file_hash": "9fa5dc70fc62a5165b18523274a956439c493c76b496bbf77e88651e5cb1d8ce",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000033wmz.png?h=9fa5dc70fc62"
+   },
+   {
+    "file_name": "img/08000034wmz.png",
+    "file_hash": "797dc6099799b54b0dcaf144514baf57b373a45beca818fb10eae1251d999106",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000034wmz.png?h=797dc6099799"
+   },
+   {
+    "file_name": "img/08000035wmz.png",
+    "file_hash": "42f40d042002a422a19cd45ea1d379d83dd2ec1ab4e6dea093f10350bc636344",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000035wmz.png?h=42f40d042002"
+   },
+   {
+    "file_name": "img/08000036wmz.png",
+    "file_hash": "b331eea24f869e9ce5930e6efde8e4cd973378d27227b8bfbabe8ead53b6a345",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000036wmz.png?h=b331eea24f86"
+   },
+   {
+    "file_name": "img/08000038wmz.png",
+    "file_hash": "f825e35597ef4878368fe6d69282f4ffdd21f6a3044ae9b612bed939a92df988",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000038wmz.png?h=f825e35597ef"
+   },
+   {
+    "file_name": "img/08000039wmz.png",
+    "file_hash": "dbaa680365b4bcba07f872d38b413fb67018ea0375d60e57c8a8e47192283588",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/08000039wmz.png?h=dbaa680365b4"
+   },
+   {
+    "file_name": "img/0800004Cwmz.jpg",
+    "file_hash": "15ec78af7444f86c3e93a1e8fbe6af818718239efbc2b53c150a8c94e0aee161",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800004Cwmz.jpg?h=15ec78af7444"
+   },
+   {
+    "file_name": "img/0800004Dwmz.jpg",
+    "file_hash": "2c03ceaa5cba87fcc93b9e26e1d6a5da99af5302af7a8be5baf5aba0e534aa40",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/img/0800004Dwmz.jpg?h=2c03ceaa5cba"
    },
    {
     "file_name": "index.html",
-    "file_hash": "4e8406a5787274b03086ebdfc399fbd47273030bfc9c78b550544170b2c7d4e4",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/index.html?h=4e8406a57872"
+    "file_hash": "c52acfd10b8cfab02e6349f7dfbe881a61ffe67d62b85e04ef7f36eebaabe7b8",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/index.html?h=c52acfd10b8c"
    },
    {
     "file_name": "manifest.webmanifest",
@@ -72,23 +417,23 @@
    },
    {
     "file_name": "pdd.js",
-    "file_hash": "aef187b5af5772aec84e6e12eefca44e538d0c05d17cc847fc0debe3fe4cf3f2",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/pdd.js?h=aef187b5af57"
+    "file_hash": "50656b3a22d7ecf7a71af6fe19eeeeb95ec91d4590ef3de33af16ad0c8684d0c",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/pdd.js?h=50656b3a22d7"
    },
    {
     "file_name": "style.css",
-    "file_hash": "f6024a29b02d612d23d2e505c182ef7b61f0f9d42febf6a8245fb35e3979261b",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/style.css?h=f6024a29b02d"
+    "file_hash": "7886b404d0b829297d8a66c41d7bffa0fc549f46c55e49cf1bc40446df87046c",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/style.css?h=7886b404d0b8"
    },
    {
     "file_name": "sw.js",
-    "file_hash": "b5b836aab27ccce2595164fcdf1c0869068a4689eeb24bf2829e4e2266aa19eb",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/sw.js?h=b5b836aab27c"
+    "file_hash": "035e987419920a24b3bcf03d85e501f8d6d607fe2f59f72ca657fd44cf7fb5d5",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/sw.js?h=035e98741992"
    },
    {
     "file_name": "version.js",
-    "file_hash": "c1c416671eeb6b699cc9e4c58a9d6bbedf181e439693238c3391ee51b7be85f8",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/version.js?h=c1c416671eeb"
+    "file_hash": "c78d40ad09cc2389d00e2993956090cd5e756e3754e882f676c30a927ed05aeb",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/version.js?h=c78d40ad09cc"
    }
   ]
  }
