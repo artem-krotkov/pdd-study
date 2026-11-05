@@ -5,15 +5,15 @@
  "native_hash": "1137c0352cdb6733f69cd877f46612ac0ba816dc3c55bc4e170953ad1f0b4a13",
  "url": "https://github.com/artem-krotkov/pdd-study/releases/download/v0.1.2/pdd-study-0.1.2.apk",
  "web": {
-  "code": 2,
-  "name": "0.1.2",
+  "code": 3,
+  "name": "0.1.3",
   "min_native": 2,
-  "notes": "Иконка-знак, голубой цвет, ссылки на пункты, рисунки, деление по предложениям",
+  "notes": "Без автосмены: листание касанием, в настройках шрифт и размер букв",
   "manifest": [
    {
     "file_name": "app.js",
-    "file_hash": "58b04351288851b7d78b70752c18ce71be9f0a0c6b5556c878d0e32a531b788b",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/app.js?h=58b043512888"
+    "file_hash": "7dcc141dc4fe1ec21e37033dae6fa13cb8fcee170b75651e84e84e7901b1b201",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/app.js?h=7dcc141dc4fe"
    },
    {
     "file_name": "fonts/literata-cyrillic.woff2",
@@ -407,8 +407,8 @@
    },
    {
     "file_name": "index.html",
-    "file_hash": "c52acfd10b8cfab02e6349f7dfbe881a61ffe67d62b85e04ef7f36eebaabe7b8",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/index.html?h=c52acfd10b8c"
+    "file_hash": "95b21bc48ba2851be04c4debcfa0228e38f66d70a4f414981ee81c9ba28ee2a8",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/index.html?h=95b21bc48ba2"
    },
    {
     "file_name": "manifest.webmanifest",
@@ -422,18 +422,18 @@
    },
    {
     "file_name": "style.css",
-    "file_hash": "7886b404d0b829297d8a66c41d7bffa0fc549f46c55e49cf1bc40446df87046c",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/style.css?h=7886b404d0b8"
+    "file_hash": "63a146d56825ef9262f5eec2c88dbe0bd3cb87199244a55748d75916222bf682",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/style.css?h=63a146d56825"
    },
    {
     "file_name": "sw.js",
-    "file_hash": "035e987419920a24b3bcf03d85e501f8d6d607fe2f59f72ca657fd44cf7fb5d5",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/sw.js?h=035e98741992"
+    "file_hash": "ff4671967df0ff3e15fdc4025ccb219701d706b6c3bfcd36fefcf78e4285cc2e",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/sw.js?h=ff4671967df0"
    },
    {
     "file_name": "version.js",
-    "file_hash": "c78d40ad09cc2389d00e2993956090cd5e756e3754e882f676c30a927ed05aeb",
-    "download_url": "https://artem-krotkov.github.io/pdd-study/version.js?h=c78d40ad09cc"
+    "file_hash": "a4692e5c9bc9ee72d2268e91791afd543a6bad508f867a751998e5ae7f33a93d",
+    "download_url": "https://artem-krotkov.github.io/pdd-study/version.js?h=a4692e5c9bc9"
    }
   ]
  }

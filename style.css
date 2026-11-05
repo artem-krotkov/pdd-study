@@ -305,27 +305,9 @@ body.playing #update { display: none; }
 
 #controls button:active { background: var(--faint); }
 
-#speed {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--dim);
-  font-size: 14px;
-}
 
-#speed b {
-  color: var(--fg);
-  font-weight: 500;
-  font-size: 18px;
-}
 
-#speed button {
-  font-size: 26px;
-  line-height: 1;
-}
 
-/* листание только касанием: скорости нет */
-body.manual #speed { display: none; }
 
 body.playing #top,
 body.playing #controls { opacity: 0; }

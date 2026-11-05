@@ -3,12 +3,12 @@
 // При обновлении неизменённые файлы (прежде всего текст ПДД, 0,4 МБ) переносятся из старого кеша,
 // по сети качаются только изменённые. В сборке Android (Capacitor) не используется.
 const FILES = {
- "./": "c52acfd10b8cfab0",
- "index.html": "c52acfd10b8cfab0",
- "style.css": "7886b404d0b82929",
- "app.js": "58b04351288851b7",
+ "./": "95b21bc48ba2851b",
+ "index.html": "95b21bc48ba2851b",
+ "style.css": "63a146d56825ef92",
+ "app.js": "7dcc141dc4fe1ec2",
  "pdd.js": "50656b3a22d7ecf7",
- "version.js": "c78d40ad09cc2389",
+ "version.js": "a4692e5c9bc9ee72",
  "manifest.webmanifest": "49d777149bce79f6",
  "icons/icon-180.png": "42a6229649c1a033",
  "icons/icon-192.png": "c6c730b4af2e78f1",
@@ -87,7 +87,7 @@ const FILES = {
  "img/0800004Cwmz.jpg": "15ec78af7444f86c",
  "img/0800004Dwmz.jpg": "2c03ceaa5cba87fc"
 };
-const CACHE = 'pdd-1379cf779c';
+const CACHE = 'pdd-784193ab50';
 const META = '__hashes';
 
 self.addEventListener('install', (e) => {

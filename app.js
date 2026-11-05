@@ -5,14 +5,12 @@
 const BOOKS = window.PDD.books;
 const PICS = window.PDD.pics || []; // группы листов: [{n, imgs: [[файл, ширина, высота]]}]
 const START = { b: 0, c: 0, v: -1 }; // заголовок главы 1
-const WPM_MIN = 50;
-const WPM_MAX = 500;
 
 const $ = (id) => document.getElementById(id);
 const body = document.body;
 const el = {
   reader: $('reader'), ref: $('ref'), bar: $('bar'), verse: $('verse'), vt: $('vt'),
-  wpm: $('wpm'), menu: $('menu'), menuTitle: $('menu-title'),
+  menu: $('menu'), menuTitle: $('menu-title'),
   menuBack: $('menu-back'), menuList: $('menu-list'), tabs: $('tabs'),
 };
 
@@ -342,7 +340,6 @@ function render() {
   const s = curScreen();
   el.verse.classList.toggle('heading', !!s.h);
   body.classList.toggle('on-heading', !!s.h);
-  body.classList.toggle('manual', manual());
   if (s.h) {
     const ch = BOOKS[pos.b].c[pos.c];
     el.vt.textContent = (pos.b === 0 ? '' : BOOKS[pos.b].n + '\n') + ch.n;
@@ -361,14 +358,11 @@ function showPaused() {
   store('pos', freeze(pos));
 }
 
-// ---------- воспроизведение ----------
+// ---------- экран не гаснет, листание ----------
 
-let playing = false;
-let timer = 0;
 let wake = null;
 let sleepTimer = 0;
 const plugins = (window.Capacitor && window.Capacitor.Plugins) || {};
-let wpm = Math.min(WPM_MAX, Math.max(WPM_MIN, load('wpm', 150)));
 
 // экран не гаснет, пока учим, и ещё минуту после последнего касания
 async function keepAwake() {
@@ -392,64 +386,22 @@ function allowSleepLater() {
   }, 60000);
 }
 
-// сколько держать экран при автолистании: время на чтение по скорости, не меньше 2 с
-function screenDelay(s) {
-  if (s.h) return 1500;
-  return Math.max(2000, (s.z - s.a + 1) * 60000 / wpm);
-}
-
-function play() {
-  if (playing) return;
-  endManual();
-  playing = true;
-  body.classList.add('playing', 'started');
-  startSession();
-  keepAwake();
-  render();
-  timer = setTimeout(step, screenDelay(curScreen()));
-}
-
-function step() {
-  if (!playing) return;
-  if (!moveScreen(1)) {
-    pause();
-    return;
-  }
-  countScreen();
-  render();
-  timer = setTimeout(step, screenDelay(curScreen()));
-}
-
-function pause() {
-  if (!playing) return;
-  playing = false;
-  clearTimeout(timer);
-  body.classList.remove('playing');
-  endSession();
-  allowSleepLater();
-  showPaused();
-  reloadIfIdle();
-}
-
 function prevScreen() {
   body.classList.add('started');
   moveScreen(-1);
   showPaused();
 }
 
-// при листании касанием ход вперёд считается чтением; при автолистании только переход
+// ход вперёд считается чтением: пункт отмечается изученным, когда показана его последняя часть
 function nextScreen() {
   body.classList.add('started');
-  const reading = !playing;
-  if (reading && !session) startSession();
+  if (!session) startSession();
   if (!moveScreen(1)) return;
-  if (reading) countScreen();
+  countScreen();
   showPaused();
-  if (reading) {
-    touchManual();
-    keepAwake();
-    allowSleepLater();
-  }
+  touchManual();
+  keepAwake();
+  allowSleepLater();
 }
 
 // ---------- прочитанное, история, дни ----------
@@ -543,12 +495,11 @@ function endSession(at) {
   store('history', readHistory);
 }
 
-// листание касанием: сессия кончается после минуты без касаний (время - по последнему касанию),
-// при меню, сворачивании; запуск автолистания тоже её закрывает
+// сессия чтения кончается после минуты без касаний (время - по последнему касанию), при меню, сворачивании
 let manualIdle = 0;
 
 function touchManual() {
-  if (playing || !session) return;
+  if (!session) return;
   session.last = Date.now();
   clearTimeout(manualIdle);
   manualIdle = setTimeout(endManual, 60000);
@@ -556,37 +507,12 @@ function touchManual() {
 
 function endManual() {
   clearTimeout(manualIdle);
-  if (playing || !session) return;
+  if (!session) return;
   endSession(session.last || Date.now());
   store('pos', freeze(pos));
 }
 
-// ---------- управление (Настройки → Листание) ----------
-// tap - листание касанием (по умолчанию); hold - пункты сменяются сами, пока держишь палец;
-// auto - сами, касание: старт и стоп. Тексты на согласовании.
-
-const FLOWS = [
-  ['tap', 'Касанием', 'Пункт сменяется касанием у правого края, назад - у левого. Свайп влево и вправо делает то же.',
-    ['Касание у правого края - пункт дальше.', 'Касание у левого края - пункт назад.']],
-  ['hold', 'Само, пока держите палец', 'Держите палец на экране - пункты сменяются сами. Отпустили - пауза.',
-    ['Держите палец на экране - пункты пойдут сами.', 'Отпустите - пауза.', 'Касание у левого или правого края - пункт назад или вперёд.']],
-  ['auto', 'Само, старт и стоп', 'Коснулись - пункты сменяются сами. Коснулись ещё раз - пауза.',
-    ['Коснитесь экрана - пункты пойдут сами.', 'Коснитесь ещё раз - пауза.', 'Касание у левого или правого края - пункт назад или вперёд.']],
-];
-let flow = FLOWS.find((f) => f[0] === load('flow', 'tap')) || FLOWS[0];
-const manual = () => flow[0] === 'tap';
-
-function showHint() {
-  const hint = $('hint');
-  hint.replaceChildren();
-  flow[3].forEach((line, k) => {
-    if (k) hint.append(document.createElement('br'));
-    hint.append(line);
-  });
-}
-
 const pointers = new Set();
-const TAP_MS = 220;
 const TAP_MOVE = 20;
 const SWIPE_MIN = 70;
 let edge = null;
@@ -611,33 +537,16 @@ el.reader.addEventListener('pointerdown', (e) => {
   pointers.add(e.pointerId);
   try { el.reader.setPointerCapture(e.pointerId); } catch (err) { /* ок */ }
   const side = edgeSide(e.clientX);
-  swipe = pointers.size === 1 && !playing ? { id: e.pointerId, x: e.clientX, y: e.clientY } : null;
-  if (flow[0] === 'tap') {
-    if (side && pointers.size === 1) edge = { id: e.pointerId, side, x: e.clientX, y: e.clientY };
-    return;
-  }
-  if (flow[0] === 'auto') {
-    if (pointers.size > 1) return;
-    if (playing) pause();
-    else if (side) edge = { id: e.pointerId, side, x: e.clientX, y: e.clientY };
-    else play();
-    return;
-  }
-  if (side && !playing && pointers.size === 1) {
-    edge = { id: e.pointerId, side, x: e.clientX, y: e.clientY };
-    edge.timer = setTimeout(() => { edge = null; play(); }, TAP_MS);
-    return;
-  }
-  play();
+  swipe = pointers.size === 1 ? { id: e.pointerId, x: e.clientX, y: e.clientY } : null;
+  if (side && pointers.size === 1) edge = { id: e.pointerId, side, x: e.clientX, y: e.clientY };
 });
 
 el.reader.addEventListener('pointermove', (e) => {
-  if (swipe && swipe.id === e.pointerId && !playing) {
+  if (swipe && swipe.id === e.pointerId) {
     const dx = e.clientX - swipe.x;
     const dy = e.clientY - swipe.y;
     if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > 1.8 * Math.abs(dy)) {
       swipe = null;
-      if (edge) clearTimeout(edge.timer);
       edge = null;
       if (dx < 0) nextScreen();
       else prevScreen();
@@ -645,28 +554,21 @@ el.reader.addEventListener('pointermove', (e) => {
       return;
     }
   }
-  if (!edge || edge.id !== e.pointerId) return;
-  if (Math.hypot(e.clientX - edge.x, e.clientY - edge.y) > TAP_MOVE) {
-    clearTimeout(edge.timer);
-    edge = null;
-    if (flow[0] === 'hold') play();
-  }
+  if (edge && edge.id === e.pointerId && Math.hypot(e.clientX - edge.x, e.clientY - edge.y) > TAP_MOVE) edge = null;
 });
 
 function release(e) {
   if (!pointers.delete(e.pointerId)) return;
   if (swipe && swipe.id === e.pointerId) swipe = null;
   if (edge && edge.id === e.pointerId) {
-    clearTimeout(edge.timer);
     const { side } = edge;
     edge = null;
-    if (!playing && e.type === 'pointerup') {
+    if (e.type === 'pointerup') {
       if (side < 0) prevScreen();
       else nextScreen();
       flash(side);
     }
   }
-  if (flow[0] === 'hold' && !pointers.size) pause();
 }
 
 el.reader.addEventListener('pointerup', release);
@@ -675,7 +577,7 @@ el.reader.addEventListener('lostpointercapture', release);
 // в полях ввода меню (вставить, выделить) нужно
 document.addEventListener('contextmenu', (e) => { if (!e.target.closest('textarea, input')) e.preventDefault(); });
 
-// на компьютере: стрелки - пункты, пробел - как касание, +/- скорость
+// на компьютере: стрелки и пробел - пункты
 document.addEventListener('keydown', (e) => {
   if (!$('xref').hidden) {
     if (e.key === 'Escape') closeXref();
@@ -687,39 +589,19 @@ document.addEventListener('keydown', (e) => {
   }
   if (e.code === 'Space') {
     e.preventDefault();
-    if (e.repeat) return;
-    if (flow[0] === 'tap') nextScreen();
-    else if (flow[0] === 'hold' || !playing) play();
-    else pause();
-  } else if (!playing && e.key === 'ArrowLeft') prevScreen();
-  else if (!playing && e.key === 'ArrowRight') nextScreen();
-  else if (e.key === '+' || e.key === '=') changeWpm(1);
-  else if (e.key === '-') changeWpm(-1);
-});
-
-document.addEventListener('keyup', (e) => {
-  if (e.code === 'Space' && flow[0] === 'hold') pause();
+    if (!e.repeat) nextScreen();
+  } else if (e.key === 'ArrowLeft') prevScreen();
+  else if (e.key === 'ArrowRight') nextScreen();
 });
 
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     pointers.clear();
-    pause();
     endManual();
     store('pos', freeze(pos));
   }
 });
 
-// ---------- скорость ----------
-
-function changeWpm(dir) {
-  wpm = Math.min(WPM_MAX, Math.max(WPM_MIN, wpm + dir * 10));
-  el.wpm.textContent = wpm;
-  store('wpm', wpm);
-}
-
-$('slower').addEventListener('click', () => changeWpm(-1));
-$('faster').addEventListener('click', () => changeWpm(1));
 $('prev').addEventListener('click', () => { prevScreen(); touchManual(); });
 $('next').addEventListener('click', nextScreen);
 
@@ -728,7 +610,6 @@ $('next').addEventListener('click', nextScreen);
 let tab = pos.b === 0 ? 'rules' : 'apps';
 
 function openMenu() {
-  pause();
   endManual();
   tab = pos.b === 0 ? 'rules' : 'apps';
   showMenuTab();
@@ -974,7 +855,7 @@ function showHistory() {
 // ---------- сохранение прогресса в файл ----------
 
 function progressData() {
-  return { app: 'pdd-study', version: 1, exported: new Date().toISOString(), pos: freeze(pos), wpm, history: readHistory, days, read: readMap };
+  return { app: 'pdd-study', version: 1, exported: new Date().toISOString(), pos: freeze(pos), history: readHistory, days, read: readMap };
 }
 
 async function exportProgress() {
@@ -1020,13 +901,10 @@ function mergeProgress(data) {
   readHistory.sort((a, b) => b.t1 - a.t1);
   if (readHistory.length > HISTORY_MAX) readHistory.length = HISTORY_MAX;
   pos = resolve(data.pos) || pos;
-  if (data.wpm >= WPM_MIN && data.wpm <= WPM_MAX) wpm = data.wpm;
   store('read', readMap);
   store('days', days);
   store('history', readHistory);
   store('pos', freeze(pos));
-  store('wpm', wpm);
-  el.wpm.textContent = wpm;
 }
 
 $('import-file').addEventListener('change', async (e) => {
@@ -1052,9 +930,9 @@ $('import-file').addEventListener('change', async (e) => {
 const HELP = [
   ['Как учить', [
     'Пункт Правил показан целиком. Длинный пункт делится на части.',
-    null,
+    'Касание у правого края - пункт дальше, у левого - пункт назад. То же делают свайп влево и вправо и кнопки внизу.',
     'У подпункта серым слева показан главный пункт, к которому он относится.',
-    'Способ листания, шрифт и размер букв - Меню → ⚙ Настройки.',
+    'Шрифт и размер букв - Меню → ⚙ Настройки.',
   ]],
   ['Переходы', [
     'Кнопки «‹ пункт» и «пункт ›» внизу листают так же, как касание у краёв.',
@@ -1078,7 +956,7 @@ function showHelp() {
   const box = node('div', 'help');
   for (const [title, lines] of HELP) {
     const ul = node('ul');
-    for (const line of lines) ul.append(node('li', '', line ?? flow[2]));
+    for (const line of lines) ul.append(node('li', '', line));
     box.append(node('h3', '', title), ul);
   }
   box.append(node('p', 'summary', versionLine()));
@@ -1092,22 +970,6 @@ function showSettings() {
   el.menuTitle.textContent = 'Настройки';
   subScreen('Назад');
   const box = node('div', 'help');
-  const flows = node('div', 'choices');
-  for (const f of FLOWS) {
-    const btn = node('button', f === flow ? 'on' : '', f[1]);
-    btn.type = 'button';
-    btn.append(node('small', '', f[2]));
-    btn.addEventListener('click', () => {
-      pause();
-      endManual();
-      flow = f;
-      store('flow', f[0]);
-      showHint();
-      render();
-      flows.querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === btn));
-    });
-    flows.append(btn);
-  }
   const fonts = node('div', 'choices');
   for (const f of FONTS) {
     const btn = node('button', f === font ? 'on' : '');
@@ -1133,13 +995,12 @@ function showSettings() {
     });
     sizes.append(btn);
   }
-  box.append(node('h3', '', 'Листание'), flows, node('h3', '', 'Шрифт'), fonts, node('h3', '', 'Размер букв'), sizes);
+  box.append(node('h3', '', 'Шрифт'), fonts, node('h3', '', 'Размер букв'), sizes);
   el.menuList.replaceChildren(box);
   el.menuList.scrollTop = 0;
 }
 
 function openHelp() {
-  pause();
   endManual();
   tab = pos.b === 0 ? 'rules' : 'apps';
   showHelp();
@@ -1184,7 +1045,6 @@ function showXref() {
 
 function openXref(t) {
   if (!xstack.length) {
-    pause();
     endManual();
   }
   xstack.push(t);
@@ -1228,8 +1088,6 @@ $('xref-go').addEventListener('click', () => {
 
 window.addEventListener('resize', () => { measure(); render(); });
 applyFont(font);
-showHint();
-el.wpm.textContent = wpm;
 showPaused();
 // новая веб-часть запустилась - иначе через 10 с модуль обновлений вернёт прежнюю
 if (plugins.CapacitorUpdater) plugins.CapacitorUpdater.notifyAppReady().catch(() => { /* ок */ });
@@ -1239,7 +1097,7 @@ if (plugins.CapacitorUpdater) plugins.CapacitorUpdater.notifyAppReady().catch(()
 let reloadWhenIdle = false;
 
 function reloadIfIdle() {
-  if (reloadWhenIdle && !playing && el.menu.hidden && $('xref').hidden) location.reload();
+  if (reloadWhenIdle && el.menu.hidden && $('xref').hidden) location.reload();
 }
 
 if ('serviceWorker' in navigator && !window.Capacitor && (location.protocol === 'https:' || location.hostname === 'localhost')) {
